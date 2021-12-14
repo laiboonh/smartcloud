@@ -8,10 +8,8 @@ import prices.routes.PriceRoutes
 import prices.services.PriceService
 import prices.services.PriceService.Exception.APICallFailure
 
-import java.time.{ ZoneId, ZonedDateTime }
-
 class PriceRoutesTest extends FunSuite {
-  private val price = Price(InstanceKind("foo"), 0.01, ZonedDateTime.of(1, 1, 1, 1, 1, 1, 1, ZoneId.of("UTC")))
+  private val price = Price(InstanceKind("foo"), 0.01)
 
   test("happyPath") {
     val priceService = new PriceService[IO]() {
@@ -27,7 +25,7 @@ class PriceRoutesTest extends FunSuite {
     } yield (resp.status, payload)).unsafeRunSync()
 
     assertEquals(status, Status.Ok)
-    assertEquals(payload, """{"kind":"foo","price":0.01,"timestamp":"0001-01-01T01:01:01.000000001Z[UTC]"}""")
+    assertEquals(payload, """{"kind":"foo","amount":0.01}""")
   }
   test("priceService APICallFailure") {
     val priceService = new PriceService[IO]() {
