@@ -61,4 +61,4 @@ Please push your code to a public repository and submit the link via email. Plea
     - `SmartcloudInstanceKindServiceTest` - to test retry mechanism and curious to see if i will actually get a 429
       response. Makes use of [TestContainers](https://github.com/testcontainers/testcontainers-scala). Need to have
       docker desktop running.
-    - `InstanceKindRoutesTest` - to test http routes behaviour with mock service layer
+    - `InstanceKindRoutesTest` - to test & document http routes behaviour with mock service layer
