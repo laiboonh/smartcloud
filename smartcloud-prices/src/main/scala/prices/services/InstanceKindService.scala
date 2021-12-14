@@ -5,7 +5,7 @@ import scala.util.control.NoStackTrace
 import prices.data._
 
 trait InstanceKindService[F[_]] {
-  def getAll(): F[List[InstanceKind]]
+  def getAll(): F[Either[InstanceKindService.Exception, List[InstanceKind]]]
 }
 
 object InstanceKindService {

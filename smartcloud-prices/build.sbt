@@ -6,14 +6,18 @@ lazy val root = (project in file("."))
     scalacOptions ~= (_.filterNot(Set("-Xfatal-warnings"))),
     libraryDependencies ++= Seq(
       L.http4s("ember-server"),
+      L.http4s("ember-client"),
       L.http4s("circe"),
       L.http4s("dsl"),
       L.circe,
       L.logback,
       L.pureConfig,
       T.munit,
+      T.testContainers("munit"),
+      T.testContainers("mockserver"),
       C.betterMonadicFor,
       C.kindProjector
     ),
-    testFrameworks += new TestFramework("munit.Framework")
+    testFrameworks += new TestFramework("munit.Framework"),
+    Test / fork := true //https://github.com/testcontainers/testcontainers-scala
   )

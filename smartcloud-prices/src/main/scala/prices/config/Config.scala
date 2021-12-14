@@ -1,9 +1,10 @@
 package prices.config
 
 import cats.effect.kernel.Sync
-
 import pureconfig.ConfigSource
 import pureconfig.generic.auto._
+
+import scala.concurrent.duration.FiniteDuration
 
 case class Config(
     app: Config.AppConfig,
@@ -19,7 +20,8 @@ object Config {
 
   case class SmartcloudConfig(
       baseUri: String,
-      token: String
+      token: String,
+      retryAfterDelay: FiniteDuration
   )
 
   def load[F[_]: Sync]: F[Config] =
