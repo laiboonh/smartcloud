@@ -13,10 +13,10 @@ class InstanceKindRoutesTest extends FunSuite {
     val instanceKindService = new InstanceKindService[IO]() {
       override def getAll(): IO[Either[InstanceKindService.Exception, List[InstanceKind]]] = IO(Right(List(InstanceKind("foo"))))
     }
-    val instanceKinRoutes = InstanceKindRoutes(instanceKindService)
+    val instanceKindRoutes = InstanceKindRoutes(instanceKindService)
     val (status, payload) = (for {
-      resp <- instanceKinRoutes.routes.orNotFound.run(
-                Request(method = Method.GET, uri = Uri.unsafeFromString(instanceKinRoutes.prefix))
+      resp <- instanceKindRoutes.routes.orNotFound.run(
+                Request(method = Method.GET, uri = Uri.unsafeFromString(instanceKindRoutes.prefix))
                   .withHeaders(Authorization(Credentials.Token(AuthScheme.Bearer, "doesn't matter")))
               )
       payload <- resp.as[String]
@@ -29,10 +29,10 @@ class InstanceKindRoutesTest extends FunSuite {
     val instanceKindService = new InstanceKindService[IO]() {
       override def getAll(): IO[Either[InstanceKindService.Exception, List[InstanceKind]]] = IO(Left(APICallFailure("401 Unauthorized")))
     }
-    val instanceKinRoutes = InstanceKindRoutes(instanceKindService)
+    val instanceKindRoutes = InstanceKindRoutes(instanceKindService)
     val (status, payload) = (for {
-      resp <- instanceKinRoutes.routes.orNotFound.run(
-                Request(method = Method.GET, uri = Uri.unsafeFromString(instanceKinRoutes.prefix))
+      resp <- instanceKindRoutes.routes.orNotFound.run(
+                Request(method = Method.GET, uri = Uri.unsafeFromString(instanceKindRoutes.prefix))
                   .withHeaders(Authorization(Credentials.Token(AuthScheme.Bearer, "doesn't matter")))
               )
       payload <- resp.as[String]

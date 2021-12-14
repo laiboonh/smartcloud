@@ -10,15 +10,12 @@ import prices.HttpClient
 import prices.config.Config.SmartcloudConfig
 import prices.data._
 
-import scala.language.postfixOps
-
 object SmartcloudInstanceKindService {
 
-  def make[F[_]: Concurrent: Async](config: SmartcloudConfig, httpClient: HttpClient[F]): InstanceKindService[F] =
+  def make[F[_]: Async](config: SmartcloudConfig, httpClient: HttpClient[F]): InstanceKindService[F] =
     new SmartcloudInstanceKindService(config, httpClient)
 
-  private final class SmartcloudInstanceKindService[F[_]: Concurrent: Async](config: SmartcloudConfig, httpClient: HttpClient[F])
-      extends InstanceKindService[F] {
+  private final class SmartcloudInstanceKindService[F[_]: Async](config: SmartcloudConfig, httpClient: HttpClient[F]) extends InstanceKindService[F] {
 
     implicit val instanceKindsEntityDecoder: EntityDecoder[F, List[String]] = jsonOf[F, List[String]]
 

@@ -47,6 +47,12 @@ The API should be running on your port 8080.
 
 Please push your code to a public repository and submit the link via email. Please do not fork this repository.
 
+<hr>
+
+# Assumptions
+
+- Assuming `GET /instances/:kind` from smartcloud will always return a price for each instance kind
+
 # Design Considerations
 
 - I changed signature of `getAll` from `def getAll(): F[List[InstanceKind]]`
@@ -57,8 +63,19 @@ Please push your code to a public repository and submit the link via email. Plea
   probably good to keep it outside of code base (E.g. Istio). Pros being code base can be kept simpler and focused only
   on business logic. WDYT?
 - Removed `SmartcloudInstanceKindService.Config` replace usage with `SmartcloudConfig`
+- Suggestions
+    - We can probably make use of data from smartcloud `GET /instances` to verify user input when they attempt to query
+      for prices using our service. Pros being invalid input do not spin up a connection to smartcloud
 - Tests
-    - `SmartcloudInstanceKindServiceTest` - to test retry mechanism and curious to see if i will actually get a 429
-      response. Makes use of [TestContainers](https://github.com/testcontainers/testcontainers-scala). Need to have
-      docker desktop running.
-    - `InstanceKindRoutesTest` - to test & document http routes behaviour with mock service layer
+    - `SmartcloudInstanceKindServiceTest, SmartcloudPriceServiceTest` - to test retry mechanism and curious to see if i
+      will actually get a 429 response. Makes use
+      of [TestContainers](https://github.com/testcontainers/testcontainers-scala). Need to have docker desktop running.
+    - `InstanceKindRoutesTest, PriceRoutesTest` - to test & document http routes behaviour with mock service layer
+    - Postman end to end tests
+
+# How to Run
+
+- Run entry point `Main` using Intellij or sbt
+- To get price `curl --request GET 'http://localhost:8080/prices?kind=sc2-micro' \
+  --header 'Authorization: Bearer lxwmuKofnxMxz6O2QE1Ogh'`
+- To get instances `curl --request GET 'http://localhost:8080/instance-kinds'`

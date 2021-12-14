@@ -5,7 +5,7 @@ import com.dimafeng.testcontainers.munit.TestContainerForAll
 import munit.FunSuite
 import prices.config.Config.SmartcloudConfig
 import prices.data.{ InstanceKind, Price }
-import prices.services.{ InstanceKindService, SmartcloudPriceService }
+import prices.services.{ PriceService, SmartcloudPriceService }
 
 import scala.concurrent.duration._
 import scala.language.postfixOps
@@ -27,7 +27,7 @@ class SmartcloudPriceServiceTest extends FunSuite with TestContainerForAll {
       val service    = SmartcloudPriceService.make[IO](config, httpclient)
       (1 until 15).foreach { n =>
         println(s"Running loop $n")
-        val price: Either[InstanceKindService.Exception, Price] = service.get(instanceKind).unsafeRunSync()
+        val price: Either[PriceService.Exception, Price] = service.get(instanceKind).unsafeRunSync()
         assert(price.isRight)
       }
     }
